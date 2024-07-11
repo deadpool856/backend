@@ -6,10 +6,12 @@ const app = new Koa();
 
 const special = require('./routes/special.js')
 const articles = require('./routes/articles.js')
+const user = require('./routes/users.js')
 
 
 app.use(special.routes());
 app.use(articles.routes());
+app.use(user.routes());
 
 
 
