@@ -1,56 +1,65 @@
 const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
+const model = require('../models/articles');
+
 
 const router = Router({prefix:'/api/v1/articles'});
 
-
-let articles =[
-    {title:'hello article', fullText:'some text here to fill the body'},
-    {title:'another article', fullText:'again here is some text here to fill'},
-    {title:'coventry univesity', fullText:' some news anout coventry university'}
-
-
-];
-
-
-
 router.get('/', getAll);
 router.post('/',bodyParser(),createArticle);
-
 router.get('/:id([0-9]{1,})',getById);
-router.put('/:id([0-9]{1,})', updateArticle);
+router.put('/:id([0-9]{1,})', bodyParser(), updateArticle);
 router.del('/:id([0-9]{1,})',deleteArticle);
 
-function getAll(cnx,next){
-    cnx.body = articles;
+async function getAll(ctx){
+    let articles = await model.getAll();
+    if (articles.length){
+        ctx.body = articles;
+    }
+   
 }
 
-function getById(cnx,next){
-    let id = cnx.params.id;
 
-    if ((id < articles.length+1)&&(id > 0)) {
-        cnx.body = articles[id-1];
-    }else{
-        cnx.status = 404;
+async function getById(ctx) {
+    let id = ctx.params.id;
+    let article = await model.getById(id);
+    if (article.length) {
+        ctx.body = article [0];
     }
 }
 
-
-function createArticle(cnx, next){
-    let {title,fullText} ={title:title, fullText:fullText};
-    articles.push(newArticle);
-    cnx.status = 201;
-    console.body = newArticle;
+async function createArticle(ctx) {
+   const body = ctx.request.body;
+   let result = await model.add(body);
+   if (result){
+    ctx.status = 201;
+    ctx.body = {ID: result.insertId}
+   }
 }
 
-
-function updateArticle(cnx,next){
+async function updateArticle(ctx) {
+    const id = ctx.params.id;
+    const body = ctx.request.body;
+    let result = await model.update(id, body);
+    if (result) {
+        ctx.body = {message: 'Article updated successfully'};
+    } else {
+        ctx.status = 500;
+        ctx.body = {error: 'Failed to update article'};
+    }
 
 }
 
-
-function deleteArticle(cnx,next){
-
+async function deleteArticle(cnx, next) {
+    const id = ctx.params.id;
+    let result = await model.delete(id);
+    if (result) {
+        ctx.status = 204; // No content
+    } else {
+        ctx.status = 500;
+        ctx.body = {error: 'Failed to delete article'};
+    }
 }
+
 
 module.exports = router;
