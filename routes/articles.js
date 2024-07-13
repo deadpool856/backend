@@ -19,7 +19,6 @@ async function getAll(ctx){
    
 }
 
-
 async function getById(ctx) {
     let id = ctx.params.id;
     let article = await model.getById(id);
