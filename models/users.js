@@ -19,3 +19,8 @@ exports.add = async function add (users) {
     let data = await db.run_query(query,users);
 }
 
+exports.findByUsername = async function getByUsername(username){
+    const query ="SELECT * FROM users where username = ?;";
+    const user = await db.run_query(query, username);
+    return user;
+}
