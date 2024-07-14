@@ -50,7 +50,7 @@ async function updateUser(ctx) {
 
 }
 
-async function deleteUser(cnx, next) {
+async function deleteUser(ctx) {
     const id = ctx.params.id;
     let result = await model.delete(id);
     if (result) {

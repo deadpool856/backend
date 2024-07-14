@@ -49,11 +49,12 @@ async function updateArticleViews(ctx) {
 
 }
 
-async function deleteArticleViews(cnx, next) {
+async function deleteArticleViews(ctx) {
     const id = ctx.params.id;
     let result = await model.delete(id);
     if (result) {
         ctx.status = 204; // No content
+        
     } else {
         ctx.status = 500;
         ctx.body = {error: 'Failed to delete articleviews'};

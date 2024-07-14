@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
 const model = require('../models/articles');
+const auth = require('../controllers/auth');
 
 
 const router = Router({prefix:'/api/v1/articles'});
@@ -49,11 +50,12 @@ async function updateArticle(ctx) {
 
 }
 
-async function deleteArticle(cnx, next) {
+async function deleteArticle(ctx) {
     const id = ctx.params.id;
     let result = await model.delete(id);
     if (result) {
-        ctx.status = 204; // No content
+        ctx.status = 204; 
+        ctx.body = {message: 'successfully delete the article'}
     } else {
         ctx.status = 500;
         ctx.body = {error: 'Failed to delete article'};

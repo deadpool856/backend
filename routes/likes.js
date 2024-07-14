@@ -49,7 +49,7 @@ async function updateLikes(ctx) {
 
 }
 
-async function deleteLikes(cnx, next) {
+async function deleteLikes(ctx) {
     const id = ctx.params.id;
     let result = await model.delete(id);
     if (result) {

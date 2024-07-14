@@ -49,7 +49,7 @@ async function updateComments(ctx) {
 
 }
 
-async function deleteComments(cnx, next) {
+async function deleteComments(ctx) {
     const id = ctx.params.id;
     let result = await model.delete(id);
     if (result) {

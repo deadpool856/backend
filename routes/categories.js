@@ -49,7 +49,7 @@ async function updateCategories(ctx) {
 
 }
 
-async function deleteCategories(cnx, next) {
+async function deleteCategories(ctx) {
     const id = ctx.params.id;
     let result = await model.delete(id);
     if (result) {

@@ -49,7 +49,7 @@ async function updatePins(ctx) {
 
 }
 
-async function deletePins(cnx, next) {
+async function deletePins(ctx) {
     const id = ctx.params.id;
     let result = await model.delete(id);
     if (result) {
